@@ -22,8 +22,27 @@ input,button{font-size:16px;padding:12px 14px;margin:6px;border-radius:10px;bord
 input{width:100%;max-width:320px;text-align:center;}
 button{min-width:120px;background:#007bff;color:#fff;border:none;border-radius:999px;cursor:pointer;box-shadow:0 8px 20px rgba(0,123,255,0.12);}
 button:active{transform:translateY(1px);}
-#infoModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,12,20,0.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:18px;transition:opacity 0.4s ease;opacity:0;z-index:1000;}
-#infoModal.show{display:flex;opacity:1;}
+#infoModal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8,12,20,0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 18px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+  z-index: 1000;
+}
+#infoModal.show {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 </style>
 </head>
 <body>
@@ -124,8 +143,18 @@ function calculateYears(){
 
 function resetFormBCE(){document.getElementById("yearInput").value="";document.getElementById("resultBCE").textContent="";document.getElementById("ratio").textContent="";document.getElementById("calcBtn").style.display="inline-block";document.getElementById("newDateBtn").style.display="none";}
 
-function openModal(){document.getElementById('infoModal').classList.add('show');}
-function closeModal(){document.getElementById('infoModal').classList.remove('show');}
+function openModal() {
+  const modal = document.getElementById('infoModal');
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const modal = document.getElementById('infoModal');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
 
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').catch(()=>{});}
 </script>
