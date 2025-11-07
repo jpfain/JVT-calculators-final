@@ -448,12 +448,13 @@
         `The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${currentYear} CE).`;
 
       const daysJehovah = diff / 1000;
-      const hrs = (daysJehovah * 24) % 24;
-      const mins = (hrs % 1) * 60;
+const roundedDays = Math.floor(daysJehovah);
+const hrs = (daysJehovah * 24) % 24;
+const mins = (hrs % 1) * 60;
 
-      // *** Updated text per your request ***
-      ratioEl.textContent =
-  `In Jehovah’s view, that’s ${daysJehovah.toFixed(6)} days, ${Math.floor(hrs)} hours, ${Math.floor(mins)} minutes.`;
+ratioEl.textContent =
+  `In Jehovah’s view, that’s ${roundedDays} day${roundedDays !== 1 ? 's' : ''} ${Math.floor(hrs)} hour${Math.floor(hrs) !== 1 ? 's' : ''} and ${Math.floor(mins)} minute${Math.floor(mins) !== 1 ? 's' : ''}.`;
+
 
       // Staggered fade-in
       resultEl.style.opacity = '0';
