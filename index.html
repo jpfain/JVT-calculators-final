@@ -453,8 +453,22 @@ const roundedDays = Math.floor(daysJehovah);
 const hrs = (daysJehovah * 24) % 24;
 const mins = (hrs % 1) * 60;
 
-ratioEl.textContent =
-  `In Jehovah’s view, that’s ${roundedDays} day${roundedDays !== 1 ? 's' : ''} ${Math.floor(hrs)} hour${Math.floor(hrs) !== 1 ? 's' : ''} and ${Math.floor(mins)} minute${Math.floor(mins) !== 1 ? 's' : ''}.`;
+let parts = [];
+
+if (roundedDays > 0) {
+  parts.push(`${roundedDays} day${roundedDays !== 1 ? 's' : ''}`);
+}
+if (Math.floor(hrs) > 0) {
+  parts.push(`${Math.floor(hrs)} hour${Math.floor(hrs) !== 1 ? 's' : ''}`);
+}
+parts.push(`${Math.floor(mins)} minute${Math.floor(mins) !== 1 ? 's' : ''}`);
+
+const formattedTime = parts.length > 1
+  ? parts.slice(0, -1).join(' ') + ' and ' + parts.slice(-1)
+  : parts[0];
+
+ratioEl.textContent = `In Jehovah’s view, that’s ${formattedTime}.`;
+
 
 
       // Staggered fade-in
