@@ -9,55 +9,24 @@
 <meta name="apple-mobile-web-app-title" content="Jehovah’s View of Time">
 <meta name="theme-color" content="#007bff">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<!-- The rest of your head and style content remain unchanged -->
 </head>
 <body>
-<!-- ... (All working HTML structure from Rev2b remains unchanged) ... -->
 <script>
-// Only changed section inside calculateYears()
-function calculateYears() {
-  const yearValue = document.getElementById('yearInput').value;
-  const era = document.getElementById('eraInput').value;
-  const resultEl = document.getElementById('resultBCE');
-  const ratioEl = document.getElementById('ratio');
-  const calcBtn = document.getElementById('calcBtn');
-  const newDateBtn = document.getElementById('newDateBtn');
-
-  const year = parseInt(yearValue, 10);
-  if (isNaN(year)) {
-    resultEl.textContent = "Please enter a valid year.";
-    ratioEl.textContent = "";
-    return;
-  }
-
-  const currentYear = new Date().getFullYear();
-  const numericYear = (era === "BCE") ? -year + 1 : year;
-  const diff = currentYear - numericYear;
-
-  resultEl.innerHTML = `The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${currentYear} CE).`;
-
-  const daysJehovah = diff / 1000;
-  const hrs = (daysJehovah * 24) % 24;
-  const mins = (hrs % 1) * 60;
-
-  ratioEl.textContent = `In Jehovah’s view, that’s ${daysJehovah.toFixed(6)} days, ${Math.floor(hrs)} hours, ${Math.floor(mins)} minutes.`;
-
-  resultEl.style.opacity = '0';
-  ratioEl.style.opacity = '0';
-  resultEl.style.transform = 'translateY(8px)';
-  ratioEl.style.transform = 'translateY(8px)';
-
-  setTimeout(() => {
-    resultEl.style.opacity = '1';
-    resultEl.style.transform = 'translateY(0)';
-  }, 50);
-  setTimeout(() => {
-    ratioEl.style.opacity = '1';
-    ratioEl.style.transform = 'translateY(0)';
-  }, 350);
-
-  calcBtn.style.display = 'none';
-  newDateBtn.style.display = 'inline-block';
+function calculateYears(){
+  const yearValue=document.getElementById('yearInput').value;
+  const era=document.getElementById('eraInput').value;
+  const resultEl=document.getElementById('resultBCE');
+  const ratioEl=document.getElementById('ratio');
+  const year=parseInt(yearValue,10);
+  if(isNaN(year)){resultEl.textContent="Please enter a valid year.";ratioEl.textContent="";return;}
+  const currentYear=new Date().getFullYear();
+  const numericYear=(era==="BCE")?-year+1:year;
+  const diff=currentYear-numericYear;
+  resultEl.innerHTML=`The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${currentYear} CE).`;
+  const daysJehovah=diff/1000;
+  const hrs=(daysJehovah*24)%24;
+  const mins=(hrs%1)*60;
+  ratioEl.textContent=`In Jehovah’s view, that’s ${daysJehovah.toFixed(6)} days, ${Math.floor(hrs)} hours, ${Math.floor(mins)} minutes.`;
 }
 </script>
 </body>
