@@ -338,18 +338,19 @@
   </div>
 
   <script>
+    
     // Splash → main app
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splash');
-        splash.style.opacity = '0';
-        setTimeout(() => {
-          splash.remove();
-          document.getElementById('age-card').classList.add('show');
-          document.getElementById('footer-watermark').classList.add('show');
-        }, 1500);
-      }, 3000);
-    });
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.style.opacity = '0';
+    setTimeout(() => {
+      splash.remove();
+      document.getElementById('age-card').classList.add('show');
+      document.getElementById('footer-watermark').classList.add('show');
+    }, 1500);
+  }, 2000); // shortened from 3000 to 2000 ms
+});
 
     // Age calculator
     function convert() {
