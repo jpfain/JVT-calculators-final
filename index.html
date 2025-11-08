@@ -506,17 +506,18 @@ ratioEl.textContent = `In Jehovah’s view, that’s ${formattedTime}.`;
     }
 
     // Modal
-    function openModal() {
-      const m = document.getElementById('infoModal');
-      m.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
+   function openModal() {
+  const m = document.getElementById('infoModal');
+  m.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
 
-    function closeModal() {
-      const m = document.getElementById('infoModal');
-      m.classList.remove('show');
-      document.body.style.overflow = '';
-    }
+function closeModal() {
+  const m = document.getElementById('infoModal');
+  m.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
 
     // Service Worker registration
     if ('serviceWorker' in navigator) {
