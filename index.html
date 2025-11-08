@@ -178,19 +178,25 @@
 >
    
     /* Modal overlay */
-   #infoModal {
+   /* Keep BCE/CE form hidden until opened */
+.hidden {
+  display: none !important;
+}
+
+/* Modal overlay */
+#infoModal {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.35); /* subtle dim overlay */
   padding: 18px;
   opacity: 0;
-  visibility: hidden;       /* ← ensures it’s invisible by default */
+  visibility: hidden;       /* fully invisible by default */
   transition: opacity 0.35s ease, visibility 0s linear 0.35s;
   z-index: 99999;
-  pointer-events: none;     /* prevents ghost clicking */
+  pointer-events: none;     /* prevents accidental clicks */
 }
 
 #infoModal.show {
@@ -200,22 +206,23 @@
   pointer-events: auto;
 }
 
-    /* Modal inner card scale-in */
-    #infoModal .modal-card {
-      width: 100%;
-      max-width: 540px;
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      text-align: left;
-      transform: scale(0.9);
-      transition: transform 0.25s ease;
-    }
+/* Modal inner card scale-in */
+#infoModal .modal-card {
+  width: 100%;
+  max-width: 540px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  transform: scale(0.9);
+  transition: transform 0.25s ease;
+}
 
-    #infoModal.show .modal-card {
-      transform: scale(1);
-    }
+#infoModal.show .modal-card {
+  transform: scale(1);
+}
+
 
     @media (prefers-color-scheme: dark) {
       body {
