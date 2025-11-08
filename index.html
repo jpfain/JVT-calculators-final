@@ -455,9 +455,9 @@ window.addEventListener('load', () => {
         `The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${currentYear} CE).`;
 
       const daysJehovah = diff / 1000;
-const roundedDays = Math.floor(daysJehovah);
-const hrs = (daysJehovah * 24) % 24;
-const mins = (hrs % 1) * 60;
+      const roundedDays = Math.floor(daysJehovah);
+      const hrs = (daysJehovah * 24) % 24;
+      const mins = (hrs % 1) * 60;
 
 let parts = [];
 
