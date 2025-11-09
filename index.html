@@ -262,6 +262,45 @@
         color: rgba(230, 238, 249, 0.35);
       }
     }
+
+/* Keep modal perfectly centered and stable during animation */
+#infoModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+
+/* Keep the modal card stable in layout */
+#infoModal .modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Fix close button position */
+#infoModal .modal-card button {
+  align-self: flex-end;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+#infoModal .modal-card button:hover {
+  background: #005fcc;
+}
+
+@media (prefers-color-scheme: dark) {
+  #infoModal .modal-card button {
+    background: #3a7fff;
+  }
+}
+
   </style>
 </head>
 
