@@ -4,17 +4,20 @@
   <meta charset="utf-8" />
   <title>Jehovah’s View of Time</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Progressive Web App setup -->
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Jehovah’s View of Time">
   <meta name="theme-color" content="#007bff">
-  <!-- App Icons for iOS and Android -->
-<link rel="apple-touch-icon" href="icons/apple-icon-180.png">
-<link rel="apple-touch-icon" sizes="167x167" href="icons/apple-icon-167.png">
-<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152.png">
-<link rel="icon" sizes="192x192" href="icons/icon-192.png">
-<link rel="icon" sizes="512x512" href="icons/icon-512.png">
+  <meta name="background-color" content="#007bff">
 
+  <!-- App Icons -->
+  <link rel="apple-touch-icon" href="icons/apple-icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-icon-167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152.png">
+  <link rel="icon" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" sizes="512x512" href="icons/icon-512.png">
 
   <style>
     html, body {
@@ -23,14 +26,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    
-/* Force smooth GPU fade for the splash icon */
-.splash-icon {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-    
+
     body {
       background: linear-gradient(to bottom right, #eaf3ff, #f9fbff);
       display: flex;
@@ -41,14 +37,8 @@
       transition: opacity 0.4s ease-in-out;
     }
 
-    .fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
+    .fade-out { opacity: 0; pointer-events: none; }
 
     .card {
       width: 100%;
@@ -63,24 +53,12 @@
       position: relative;
       z-index: 0;
     }
+    .card.show { opacity: 1; }
+    .card.active { z-index: 10; }
 
-    .card.show {
-      opacity: 1;
-    }
+    h2 { margin: 0 0 20px; color: #2c3e50; font-size: 1.3rem; }
 
-    .card.active {
-      z-index: 10;
-    }
-
-    h2 {
-      margin: 0 0 20px;
-      color: #2c3e50;
-      font-size: 1.3rem;
-    }
-
-    input,
-    select,
-    button {
+    input, select, button {
       font-size: 16px;
       padding: 12px 14px;
       margin: 6px;
@@ -89,11 +67,7 @@
       box-sizing: border-box;
     }
 
-    input {
-      width: 100%;
-      max-width: 320px;
-      text-align: center;
-    }
+    input { width: 100%; max-width: 320px; text-align: center; }
 
     button {
       min-width: 120px;
@@ -105,12 +79,8 @@
       box-shadow: 0 8px 20px rgba(0, 123, 255, 0.12);
       transition: background 0.2s ease;
     }
+    button:active { transform: translateY(1px); }
 
-    button:active {
-      transform: translateY(1px);
-    }
-
-    /* Lighter, smaller nav buttons */
     .nav-btn {
       background: #6da9ff;
       font-size: 15px;
@@ -118,10 +88,7 @@
       width: auto;
       min-width: 0;
     }
-
-    .nav-btn:hover {
-      background: #5b96eb;
-    }
+    .nav-btn:hover { background: #5b96eb; }
 
     #result {
       font-size: 1.25rem;
@@ -131,21 +98,7 @@
       transform: translateY(6px);
       transition: opacity 300ms, transform 300ms;
     }
-
-    #result.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .more-info {
-      margin-top: 14px;
-      font-size: 0.92rem;
-    }
-
-    .more-info a {
-      color: #007bff;
-      text-decoration: none;
-    }
+    #result.show { opacity: 1; transform: translateY(0); }
 
     .footer-watermark {
       position: fixed;
@@ -159,12 +112,8 @@
       font-style: italic;
       pointer-events: none;
     }
+    .footer-watermark.show { opacity: 1; }
 
-    .footer-watermark.show {
-      opacity: 1;
-    }
-
-    /* BCE/CE input row (same line input + dropdown) */
     .input-row {
       display: flex;
       justify-content: center;
@@ -173,211 +122,103 @@
       flex-wrap: wrap;
       margin-top: 6px;
     }
+    .input-row input { flex: 1 1 60%; max-width: 220px; }
+    .input-row select { font-size: 1.1rem; padding: 8px 10px; }
 
-    .input-row input {
-      flex: 1 1 60%;
-      max-width: 220px;
+    /* Modal */
+    #infoModal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.35);
+      padding: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+      z-index: 99999;
+      pointer-events: none;
     }
-
-    .input-row select {
-      font-size: 1.1rem;
-      padding: 8px 10px;
+    #infoModal.show {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+      pointer-events: auto;
     }
-<input
-  id="yearInput"
-  inputmode="numeric"
-  pattern="[0-9]*"
-  placeholder="Enter date (e.g. 607)"
->
-   
-    /* Modal overlay */
-   /* Keep BCE/CE form hidden until opened */
-.hidden {
-  display: none !important;
-}
-
-/* Modal overlay */
-#infoModal {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.35); /* subtle dim overlay */
-  padding: 18px;
-  opacity: 0;
-  visibility: hidden;       /* fully invisible by default */
-  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-  z-index: 99999;
-  pointer-events: none;     /* prevents accidental clicks */
-}
-
-#infoModal.show {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-  pointer-events: auto;
-}
-
-/* Modal inner card scale-in */
-#infoModal .modal-card {
-  width: 100%;
-  max-width: 540px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  text-align: left;
-  transform: scale(0.9);
-  transition: transform 0.25s ease;
-}
-
-#infoModal.show .modal-card {
-  transform: scale(1);
-}
-
+    #infoModal .modal-card {
+      width: 100%;
+      max-width: 540px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      transform: scale(0.9);
+      transition: transform 0.25s ease;
+      position: relative;
+    }
+    #infoModal.show .modal-card { transform: scale(1); }
+    #infoModal .modal-card button {
+      align-self: flex-end;
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+    }
 
     @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #101214, #171a1d);
-        color: #e6eef9;
-      }
-
-      .card {
-        background: #151718;
-      }
-
-      input {
-        background: #1f2326;
-        border: 1px solid #2b2f33;
-        color: #e6eef9;
-      }
-
-      #infoModal .modal-card {
-        background: #171a1d;
-        color: #e6eef9;
-      }
-
-      .footer-watermark {
-        color: rgba(230, 238, 249, 0.35);
-      }
+      body { background: linear-gradient(135deg, #101214, #171a1d); color: #e6eef9; }
+      .card { background: #151718; }
+      input { background: #1f2326; border: 1px solid #2b2f33; color: #e6eef9; }
+      #infoModal .modal-card { background: #171a1d; color: #e6eef9; }
+      .footer-watermark { color: rgba(230,238,249,0.35); }
     }
-
-/* Keep modal perfectly centered and stable during animation */
-#infoModal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: left;
-}
-
-/* Keep the modal card stable in layout */
-#infoModal .modal-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* Fix close button position */
-#infoModal .modal-card button {
-  align-self: flex-end;
-  margin-top: 12px;
-  padding: 10px 16px;
-  border-radius: 10px;
-  background: #007bff;
-  color: #fff;
-  border: none;
-  transition: background 0.2s ease;
-}
-
-#infoModal .modal-card button:hover {
-  background: #005fcc;
-}
-
-@media (prefers-color-scheme: dark) {
-  #infoModal .modal-card button {
-    background: #3a7fff;
-  }
-}
-
   </style>
 </head>
 
 <body>
-  <!-- Splash Screen -->
+  <!-- Splash -->
   <div id="splash" style="position:fixed;inset:0;background:#007bff;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Playfair Display',serif;z-index:9999;transition:opacity 1.5s ease;">
     <div style="width:110px;height:110px;background:#fff;border-radius:26px;display:flex;align-items:center;justify-content:center;color:#007bff;font-size:2.8rem;font-weight:800;margin-bottom:22px;">⏳</div>
     <h1>Jehovah’s View of Time</h1>
   </div>
 
-  <!-- Age Calculator Card -->
+  <!-- Age Calculator -->
   <div class="card active" id="age-card">
     <h2>How old are you in Jehovah's eyes?</h2>
-    <input
-      id="age"
-      inputmode="decimal"
-      pattern="[0-9,.]*"
-      placeholder="Enter your age (Decimals are allowed)"
-      step="0.01"
-      min="0"
-    >
-
+    <input id="age" inputmode="decimal" pattern="[0-9,.]*" placeholder="Enter your age" step="0.01" min="0">
     <div style="margin-top:8px">
       <button onclick="convert()">Calculate</button>
-      <button
-        id="reset-btn"
-        style="display:none;background:#fff;color:#007bff;border:1px solid #d1d5db"
-        onclick="resetForm()"
-      >Reset</button>
+      <button id="reset-btn" style="display:none;background:#fff;color:#007bff;border:1px solid #d1d5db" onclick="resetForm()">Reset</button>
     </div>
-
     <div id="output-area">
       <span id="label"></span>
       <div id="result"></div>
     </div>
-
     <div style="margin-top:16px">
       <button class="nav-btn" onclick="openBCE()">Open BCE/CE Calculator</button>
     </div>
-
     <div class="more-info">
       <a href="#" onclick="openModal(); return false;">More Information</a>
     </div>
   </div>
 
-  <!-- BCE / CE Calculator Card -->
+  <!-- BCE / CE Calculator -->
   <div class="card hidden" id="bce-card" style="opacity:0;">
     <h2>BCE/CE Years Calculator</h2>
-
     <div class="input-row">
-      <input
-        type="number"
-        id="yearInput"
-        placeholder="Enter date (e.g. 607)"
-      />
+      <input type="number" id="yearInput" placeholder="Enter date (e.g. 607)" />
       <select id="eraInput">
         <option value="BCE">BCE</option>
         <option value="CE" selected>CE</option>
       </select>
     </div>
-
     <button id="calcBtn" onclick="calculateYears()">Calculate</button>
-    <button
-      id="newDateBtn"
-      style="display:none;background:#ddd;color:#222"
-      onclick="resetFormBCE()"
-    >New Date</button>
-
-    <div
-      id="resultBCE"
-      style="margin-top:24px;font-size:1.1em;color:#0b1220;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"
-    ></div>
-    <div
-      id="ratio"
-      style="margin-top:12px;font-size:1em;color:#555;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"
-    ></div>
-
+    <button id="newDateBtn" style="display:none;background:#ddd;color:#222" onclick="resetFormBCE()">New Date</button>
+    <div id="resultBCE" style="margin-top:24px;font-size:1.1em;color:#0b1220;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"></div>
+    <div id="ratio" style="margin-top:12px;font-size:1em;color:#555;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"></div>
     <div style="margin-top:16px">
       <button class="nav-btn" onclick="openAge()">Back to Age Calculator</button>
     </div>
@@ -389,66 +230,46 @@
       <h3>Jehovah's View of Time</h3>
       <p>1,000 years equal one day in Jehovah's view of time. (Ps 90:4; 2 Pet 3:8)</p>
       <p>Therefore, <strong>41.656 years = 1 hour</strong>, and <strong>0.694 years = 1 minute</strong> in Jehovah's eyes.</p>
-      <ul>
-        <li>Jesus' death (33 CE) ≈ ___ hours in Jehovah's view.</li>
-        <li>Adam's creation (4026 BCE) ≈ ____ days and ____ (as of 2025).</li>
-      </ul>
       <button onclick="closeModal()">Close</button>
     </div>
   </div>
 
-  <!-- Footer watermark -->
-  <div class="footer-watermark" id="footer-watermark">
-    Jehovah’s View of Time
-  </div>
+  <div class="footer-watermark" id="footer-watermark">Jehovah’s View of Time</div>
 
   <script>
-    
-    // Splash → main app
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.remove();
-      document.getElementById('age-card').classList.add('show');
-      document.getElementById('footer-watermark').classList.add('show');
-    }, 1500);
-  }, 2000); // shortened from 3000 to 2000 ms
-});
+    // Splash
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        setTimeout(() => {
+          splash.remove();
+          document.getElementById('age-card').classList.add('show');
+          document.getElementById('footer-watermark').classList.add('show');
+        }, 1500);
+      }, 2000);
+    });
 
-    // Age calculator
+    // Age Calculator
     function convert() {
       const raw = document.getElementById('age').value.replace(/,/g, '');
       const age = parseFloat(raw);
-      if (isNaN(age) || age < 0) {
-        alert('Please enter a valid number');
-        return;
-      }
-
+      if (isNaN(age) || age < 0) { alert('Please enter a valid number'); return; }
       const totalHours = age / 41.656;
       const D = Math.floor(totalHours / 24);
       const H = Math.floor(totalHours % 24);
       const M = Math.floor((totalHours * 60) % 60);
       const S = Math.round((totalHours * 3600) % 60);
-
       let output = '';
-      if (D > 0) {
-        output = `${D} day${D !== 1 ? 's' : ''} ${H} hour${H !== 1 ? 's' : ''}`;
-      } else if (H > 0) {
-        output = `${H} hour${H !== 1 ? 's' : ''} ${M} minute${M !== 1 ? 's' : ''}`;
-      } else {
-        output = `${M} minute${M !== 1 ? 's' : ''} ${S} second${S !== 1 ? 's' : ''}`;
-      }
-
+      if (D > 0) output = `${D} day${D!==1?'s':''} ${H} hour${H!==1?'s':''}`;
+      else if (H > 0) output = `${H} hour${H!==1?'s':''} ${M} minute${M!==1?'s':''}`;
+      else output = `${M} minute${M!==1?'s':''} ${S} second${S!==1?'s':''}`;
       document.getElementById('label').innerText = "Your age in Jehovah’s eyes:";
       const r = document.getElementById('result');
-      r.classList.remove('show');
-      r.textContent = output;
+      r.classList.remove('show'); r.textContent = output;
       setTimeout(() => r.classList.add('show'), 30);
       document.getElementById('reset-btn').style.display = 'inline-block';
     }
-
     function resetForm() {
       document.getElementById('age').value = '';
       document.getElementById('label').innerText = '';
@@ -456,131 +277,57 @@ window.addEventListener('load', () => {
       document.getElementById('reset-btn').style.display = 'none';
     }
 
-    // Switch to BCE/CE
+    // Card switching
     function openBCE() {
-      const ageCard = document.getElementById('age-card');
-      const bceCard = document.getElementById('bce-card');
-
-      ageCard.classList.remove('active');
-      bceCard.classList.add('active');
-
-      ageCard.style.opacity = '0';
-
-      setTimeout(() => {
-        ageCard.classList.add('hidden');
-        bceCard.classList.remove('hidden');
-        setTimeout(() => { bceCard.style.opacity = '1'; }, 50);
-      }, 400);
+      const a = document.getElementById('age-card'), b = document.getElementById('bce-card');
+      a.classList.remove('active'); b.classList.add('active');
+      a.style.opacity = '0';
+      setTimeout(() => { a.classList.add('hidden'); b.classList.remove('hidden'); setTimeout(()=>{b.style.opacity='1';},50); },400);
     }
-
-    // Back to Age calculator
     function openAge() {
-      const ageCard = document.getElementById('age-card');
-      const bceCard = document.getElementById('bce-card');
-
-      bceCard.classList.remove('active');
-      ageCard.classList.add('active');
-
-      bceCard.style.opacity = '0';
-
-      setTimeout(() => {
-        bceCard.classList.add('hidden');
-        ageCard.classList.remove('hidden');
-        setTimeout(() => { ageCard.style.opacity = '1'; }, 50);
-      }, 400);
+      const a = document.getElementById('age-card'), b = document.getElementById('bce-card');
+      b.classList.remove('active'); a.classList.add('active');
+      b.style.opacity = '0';
+      setTimeout(() => { b.classList.add('hidden'); a.classList.remove('hidden'); setTimeout(()=>{a.style.opacity='1';},50); },400);
     }
 
-    // BCE/CE calculator
+    // BCE/CE Calculator
     function calculateYears() {
-      const yearValue = document.getElementById('yearInput').value;
-      const era = document.getElementById('eraInput').value;
-      const resultEl = document.getElementById('resultBCE');
-      const ratioEl = document.getElementById('ratio');
-      const calcBtn = document.getElementById('calcBtn');
-      const newDateBtn = document.getElementById('newDateBtn');
-
-      const year = parseInt(yearValue, 10);
-      if (isNaN(year)) {
-        resultEl.textContent = "Please enter a valid year.";
-        ratioEl.textContent = "";
-        return;
-      }
-
-      const currentYear = new Date().getFullYear();
+      const yv = document.getElementById('yearInput').value, era = document.getElementById('eraInput').value;
+      const resultEl = document.getElementById('resultBCE'), ratioEl = document.getElementById('ratio');
+      const calcBtn = document.getElementById('calcBtn'), newDateBtn = document.getElementById('newDateBtn');
+      const year = parseInt(yv,10);
+      if (isNaN(year)) { resultEl.textContent="Please enter a valid year."; ratioEl.textContent=""; return; }
+      const current = new Date().getFullYear();
       const numericYear = (era === "BCE") ? -year + 1 : year;
-      const diff = currentYear - numericYear;
-
-      resultEl.innerHTML =
-        `The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${currentYear} CE).`;
-
+      const diff = current - numericYear;
+      resultEl.innerHTML = `The year <strong>${year} ${era}</strong> was <strong>${diff.toLocaleString()}</strong> years ago (as of ${current} CE).`;
       const daysJehovah = diff / 1000;
       const roundedDays = Math.floor(daysJehovah);
       const hrs = (daysJehovah * 24) % 24;
       const mins = (hrs % 1) * 60;
-
-let parts = [];
-
-if (roundedDays > 0) {
-  parts.push(`${roundedDays} day${roundedDays !== 1 ? 's' : ''}`);
-}
-if (Math.floor(hrs) > 0) {
-  parts.push(`${Math.floor(hrs)} hour${Math.floor(hrs) !== 1 ? 's' : ''}`);
-}
-parts.push(`${Math.floor(mins)} minute${Math.floor(mins) !== 1 ? 's' : ''}`);
-
-const formattedTime = parts.length > 1
-  ? parts.slice(0, -1).join(' ') + ' and ' + parts.slice(-1)
-  : parts[0];
-
-ratio.textContent = `In Jehovah’s view, that’s ${formatted}.`;
-
-
-      // Staggered fade-in
-      resultEl.style.opacity = '0';
-      ratioEl.style.opacity = '0';
-      resultEl.style.transform = 'translateY(8px)';
-      ratioEl.style.transform = 'translateY(8px)';
-
-      setTimeout(() => {
-        resultEl.style.opacity = '1';
-        resultEl.style.transform = 'translateY(0)';
-      }, 50);
-
-      setTimeout(() => {
-        ratioEl.style.opacity = '1';
-        ratioEl.style.transform = 'translateY(0)';
-      }, 350);
-
-      calcBtn.style.display = 'none';
-      newDateBtn.style.display = 'inline-block';
+      const parts = [];
+      if (roundedDays > 0) parts.push(`${roundedDays} day${roundedDays!==1?'s':''}`);
+      if (Math.floor(hrs) > 0) parts.push(`${Math.floor(hrs)} hour${Math.floor(hrs)!==1?'s':''}`);
+      parts.push(`${Math.floor(mins)} minute${Math.floor(mins)!==1?'s':''}`);
+      const formatted = parts.length>1?parts.slice(0,-1).join(' ')+' and '+parts.slice(-1):parts[0];
+      ratioEl.innerHTML = `In Jehovah’s view, that’s <strong>${formatted}</strong>.`;
+      resultEl.style.opacity='0'; ratioEl.style.opacity='0'; resultEl.style.transform='translateY(8px)'; ratioEl.style.transform='translateY(8px)';
+      setTimeout(()=>{resultEl.style.opacity='1';resultEl.style.transform='translateY(0)';},50);
+      setTimeout(()=>{ratioEl.style.opacity='1';ratioEl.style.transform='translateY(0)';},350);
+      calcBtn.style.display='none'; newDateBtn.style.display='inline-block';
     }
-
     function resetFormBCE() {
-      document.getElementById('yearInput').value = '';
-      document.getElementById('resultBCE').textContent = '';
-      document.getElementById('ratio').textContent = '';
-      document.getElementById('calcBtn').style.display = 'inline-block';
-      document.getElementById('newDateBtn').style.display = 'none';
+      document.getElementById('yearInput').value=''; document.getElementById('resultBCE').textContent=''; document.getElementById('ratio').textContent='';
+      document.getElementById('calcBtn').style.display='inline-block'; document.getElementById('newDateBtn').style.display='none';
     }
 
     // Modal
-   function openModal() {
-  const m = document.getElementById('infoModal');
-  m.classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
+    function openModal() { document.getElementById('infoModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeModal() { document.getElementById('infoModal').classList.remove('show'); document.body.style.overflow=''; }
 
-function closeModal() {
-  const m = document.getElementById('infoModal');
-  m.classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-
-    // Service Worker registration
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-    }
+    // Service Worker
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
   </script>
 </body>
 </html>
