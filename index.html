@@ -532,7 +532,8 @@ const formattedTime = parts.length > 1
   ? parts.slice(0, -1).join(' ') + ' and ' + parts.slice(-1)
   : parts[0];
 
-ratio.innerHTML = `In Jehovah’s view, that’s <strong>${formatted}</strong>.`;
+ratio.textContent = `In Jehovah’s view, that’s ${formatted}.`;
+
 
       // Staggered fade-in
       resultEl.style.opacity = '0';
