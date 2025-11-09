@@ -158,15 +158,28 @@
       position: relative;
     }
     #infoModal.show .modal-card { transform: scale(1); }
-    #infoModal .modal-card button {
-      align-self: flex-end;
-      margin-top: 12px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-    }
+    /* Position Close button neatly in top-right of modal */
+#infoModal .modal-card {
+  position: relative;
+}
+
+#infoModal .modal-card button {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#infoModal .modal-card button:hover {
+  background: #005fcc;
+}
+
 
     @media (prefers-color-scheme: dark) {
       body { background: linear-gradient(135deg, #101214, #171a1d); color: #e6eef9; }
