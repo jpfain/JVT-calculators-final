@@ -233,28 +233,43 @@
 
   <!-- BCE / CE Calculator -->
   <div class="card hidden" id="bce-card" style="opacity:0;">
-    <h2>BCE/CE Years Calculator</h2>
-    <div class="input-row">
-      <input type="number" id="yearInput" placeholder="Enter date (e.g. 607)" />
-      <select id="eraInput">
-        <option value="BCE">BCE</option>
-        <option value="CE" selected>CE</option>
-      </select>
-    </div>
-    <button id="calcBtn" onclick="calculateYears()">Calculate</button>
-<button id="calcBtn" onclick="calculateYears()">Calculate</button>
-<button
-  id="newDateBtn"
-  style="display:none;background:#fff;color:#007bff;border:1px solid #d1d5db"
-  onclick="resetFormBCE()"
->Reset</button>
+  <h2>BCE/CE Years Calculator</h2>
 
-    <div id="resultBCE" style="margin-top:24px;font-size:1.1em;color:#0b1220;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"></div>
-    <div id="ratio" style="margin-top:12px;font-size:1em;color:#555;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"></div>
-    <div style="margin-top:16px">
-      <button class="nav-btn" onclick="openAge()">Back to Age Calculator</button>
-    </div>
+  <div class="input-row">
+    <input
+      type="number"
+      id="yearInput"
+      placeholder="Enter date (e.g. 607)"
+    />
+    <select id="eraInput">
+      <option value="BCE">BCE</option>
+      <option value="CE" selected>CE</option>
+    </select>
   </div>
+
+  <div style="margin-top:12px;">
+    <button id="calcBtn" onclick="calculateYears()">Calculate</button>
+    <button
+      id="newDateBtn"
+      style="display:none;background:#fff;color:#007bff;border:1px solid #d1d5db"
+      onclick="resetFormBCE()"
+    >Reset</button>
+  </div>
+
+  <div
+    id="resultBCE"
+    style="margin-top:24px;font-size:1.1em;color:#0b1220;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"
+  ></div>
+  <div
+    id="ratio"
+    style="margin-top:12px;font-size:1em;color:#555;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;"
+  ></div>
+
+  <div style="margin-top:16px">
+    <button class="nav-btn" onclick="openAge()">Back to Age Calculator</button>
+  </div>
+</div>
+
 
   <!-- Info Modal -->
   <div id="infoModal">
