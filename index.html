@@ -237,10 +237,12 @@
 
   <div class="input-row">
     <input
-      type="number"
-      id="yearInput"
-      placeholder="Enter date (e.g. 607)"
-    />
+  id="yearInput"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  placeholder="Enter date (e.g. 607)"
+>
+
     <select id="eraInput">
       <option value="BCE">BCE</option>
       <option value="CE" selected>CE</option>
